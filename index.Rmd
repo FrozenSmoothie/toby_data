@@ -1,0 +1,42 @@
+--- 
+title: "Cabin data documentation"
+subtitle: "Command data"
+author: "Saphy"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: 
+    bookdown::gitbook:
+        css: style.css
+        number_sections: true
+        anchor_sections: false
+        split_by: chapter
+        config:
+            sharing:
+                 github: no
+                 facebook: no
+                 twitter: no
+                 all: no
+            toc:
+                collapse: section
+                scroll_highlight: yes
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  Toby book.
+  The HTML output format for this example is bookdown::gitbook,
+  set in the _output.yml file.
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+---
+
+# About
+
+Boring info ahead:
+```This bookdown contains information about Cabin server data. The data is obtained by Toby.````
+Really don't know what to put here being fully honest. Anyway hi Kierannnnnnnnnnnn ^~^
+
+Gotta love tobyyyyyyyyyyyy
+
+Also plz checkout the rest of the pages. I don't have much yet but it took me a while to set this html up.

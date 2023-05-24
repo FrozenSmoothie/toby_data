@@ -1,0 +1,67 @@
+# command data
+## Setup
+
+```{r package loading, message=FALSE, warning=FALSE}
+# loading packages
+library(tidyverse)
+library(here)
+library(reactable)
+library(reactablefmtr)
+library(magrittr)
+library(RColorBrewer)
+```
+
+## Loading Toby's command data
+
+```{r loading in data}
+toby_command_data <- read.csv(
+  file = here::here("command_data", "CommandUsageStore.csv")
+  )
+
+
+# presenting data in table form
+reactable(
+  toby_command_data, 
+  filterable = TRUE,
+  compact = TRUE,
+  bordered = TRUE,
+  defaultPageSize = 5,
+  theme = reactableTheme(
+    style = list(fontFamily = "-system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"))
+  )
+```
+
+## plotting data
+
+```{r plotting data}
+# changing command column type into factor
+toby_command_data$Command <- toby_command_data$Command %>% factor(levels = unique(toby_command_data$Command))
+
+# counting number of command usages and calculating the proportion based on the total commands used
+toby_command_data_mutated <- toby_command_data %>% 
+  count(Command) %>%  
+  mutate(proportion = n / sum(n)*100) 
+
+# ordering commands based on proportion
+toby_command_data_mutated <- toby_command_data_mutated %>% 
+  mutate(
+    "commands_ordered"=reorder(
+      toby_command_data_mutated$Command,
+      toby_command_data_mutated$proportion,
+      decreasing = TRUE)
+    )
+
+# plotting command data against the counts
+toby_command_data_mutated %>% 
+  ggplot(aes(x = commands_ordered, y = proportion, fill=commands_ordered, label=round(proportion, 1))) +
+  geom_col(position = position_dodge()) +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1), legend.position = "none")+
+  geom_text(nudge_y = 1, angle = 60) + 
+ labs(
+   title = 'Proportions of toby commands',
+   y = "proportion (%)",
+   x = "commands"
+      )
+```
+
+<img src="img/plotting_data-1.png" class="img-responsive" alt=""> </div>
