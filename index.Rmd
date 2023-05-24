@@ -34,9 +34,10 @@ github-repo: rstudio/bookdown-demo
 # About
 
 Boring info ahead:
-```This bookdown contains information about Cabin server data. The data is obtained by Toby.````
-Really don't know what to put here being fully honest. Anyway hi Kierannnnnnnnnnnn ^~^
+This bookdown contains information about Cabin server data. The data is obtained by Toby.Really don't know what to put here being fully honest. Anyway hiiiiiiiiiiiiiiiiii \^~\^
 
 Gotta love tobyyyyyyyyyyyy
 
 Also plz checkout the rest of the pages. I don't have much yet but it took me a while to set this html up.
+
+<img src="img/serverIcon.png" class="img-responsive" alt=""> </div>

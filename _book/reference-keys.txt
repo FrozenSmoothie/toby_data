@@ -1,5 +1,13 @@
 about
-command-data
+toby-command-data
 setup
 loading-tobys-command-data
 plotting-data
+proportion-graph
+counts-graph
+toby-junior-command-data
+setup-1
+loading-tobys-command-data-1
+plotting-data-1
+proportion-graph-1
+counts-graph-1

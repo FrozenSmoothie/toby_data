@@ -1,7 +1,15 @@
-# command data
+# Toby command data
 ## Setup
 
-```{r package loading, message=FALSE, warning=FALSE}
+```{r toby setup, include=FALSE}
+knitr::opts_chunk$set(
+  eval = TRUE,
+  message = FALSE,
+  warning = FALSE
+  )
+```
+
+```{r toby package loading}
 # loading packages
 library(tidyverse)
 library(here)
@@ -13,11 +21,14 @@ library(RColorBrewer)
 
 ## Loading Toby's command data
 
-```{r loading in data}
+```{r toby loading in data}
+# loading in data
 toby_command_data <- read.csv(
-  file = here::here("command_data", "CommandUsageStore.csv")
+  file = here::here("toby_data", "TobyCommandUsageStore.csv")
   )
 
+# making commands all lowercase (there were both snuggle and Snuggle)
+toby_command_data <- toby_command_data %>% mutate("Command"=tolower(Command))
 
 # presenting data in table form
 reactable(
@@ -33,7 +44,7 @@ reactable(
 
 ## plotting data
 
-```{r plotting data}
+```{r toby_plotting_data}
 # changing command column type into factor
 toby_command_data$Command <- toby_command_data$Command %>% factor(levels = unique(toby_command_data$Command))
 
@@ -51,17 +62,33 @@ toby_command_data_mutated <- toby_command_data_mutated %>%
       decreasing = TRUE)
     )
 
-# plotting command data against the counts
+# plotting command data against the proportion
 toby_command_data_mutated %>% 
   ggplot(aes(x = commands_ordered, y = proportion, fill=commands_ordered, label=round(proportion, 1))) +
   geom_col(position = position_dodge()) +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1), legend.position = "none")+
-  geom_text(nudge_y = 1, angle = 60) + 
+  theme(axis.text.x = element_text(size = 8, angle = 60, hjust = 1), legend.position = "none")+
+  geom_text(size = 3.5, nudge_y = 2, angle = 60) + 
  labs(
-   title = 'Proportions of toby commands',
+   title = 'Proportions of Toby Junior commands',
    y = "proportion (%)",
+   x = "commands"
+      )
+
+# plotting command data against the counts
+toby_command_data_mutated %>%
+  ggplot(aes(x = commands_ordered, y = n, fill=commands_ordered, label=round(n, 1))) +
+  geom_col(position = position_dodge()) +
+  theme(axis.text.x = element_text(size = 8, angle = 60, hjust = 1), legend.position = "none")+
+  geom_text(size = 3.5, nudge_y = 20, angle = 60) +
+ labs(
+   title = 'Counts of Toby Junior commands',
+   y = "counts",
    x = "commands"
       )
 ```
 
-<img src="img/plotting_data-1.png" class="img-responsive" alt=""> </div>
+## Proportion graph
+<img src="img/toby_plotting_data-1.png" class="img-responsive" alt=""> </div>
+
+## Counts graph
+<img src="img/toby_plotting_data-2.png" class="img-responsive" alt=""> </div>

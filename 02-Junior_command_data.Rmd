@@ -1,0 +1,93 @@
+# Toby Junior command data
+## Setup
+
+```{r junior setup, include=FALSE}
+knitr::opts_chunk$set(
+  eval = TRUE,
+  message = FALSE,
+  warning = FALSE
+  )
+```
+
+```{r junior package loading}
+# loading packages
+library(tidyverse)
+library(here)
+library(reactable)
+library(reactablefmtr)
+library(magrittr)
+library(RColorBrewer)
+```
+
+## Loading Toby's command data
+
+```{r junior loading in data}
+junior_command_data <- read.csv(
+  file = here::here("junior_data", "JuniorCommandUsageStore.csv")
+  )
+
+# making commands all lowercase (there were both snuggle and Snuggle)
+junior_command_data <- junior_command_data %>% mutate("Command"=tolower(Command))
+
+# presenting data in table form
+reactable(
+  junior_command_data, 
+  filterable = TRUE,
+  compact = TRUE,
+  bordered = TRUE,
+  defaultPageSize = 5,
+  theme = reactableTheme(
+    style = list(fontFamily = "-system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"))
+  )
+```
+
+## plotting data
+
+```{r junior_plotting_data}
+# changing command column type into factor
+junior_command_data$Command <- junior_command_data$Command %>% factor(levels = unique(junior_command_data$Command))
+
+# counting number of command usages and calculating the proportion based on the total commands used
+junior_command_data_mutated <- junior_command_data %>% 
+  count(Command) %>%  
+  mutate(proportion = n / sum(n)*100) 
+
+# ordering commands based on proportion
+junior_command_data_mutated <- junior_command_data_mutated %>% 
+  mutate(
+    "commands_ordered"=reorder(
+      junior_command_data_mutated$Command,
+      junior_command_data_mutated$proportion,
+      decreasing = TRUE)
+    )
+
+# plotting command data against the proportion
+junior_command_data_mutated %>% 
+  ggplot(aes(x = commands_ordered, y = proportion, fill=commands_ordered, label=round(proportion, 1))) +
+  geom_col(position = position_dodge()) +
+  theme(axis.text.x = element_text(size = 11, angle = 60, hjust = 1), legend.position = "none")+
+  geom_text(size = 3.5, nudge_y = 1, angle = 60) + 
+ labs(
+   title = 'Proportions of Toby Junior commands',
+   y = "proportion (%)",
+   x = "commands"
+      )
+
+# plotting command data against the counts
+junior_command_data_mutated %>%
+  ggplot(aes(x = commands_ordered, y = n, fill=commands_ordered, label=round(n, 1))) +
+  geom_col(position = position_dodge()) +
+  theme(axis.text.x = element_text(size = 11, angle = 60, hjust = 1), legend.position = "none")+
+  geom_text(size = 3.5, nudge_y = 50, angle = 60) +
+ labs(
+   title = 'Counts of Toby Junior commands',
+   y = "counts",
+   x = "commands"
+      )
+```
+
+## Proportion graph
+<img src="img/junior_plotting_data-1.png" class="img-responsive" alt=""> </div>
+
+## Counts graph
+<img src="img/junior_plotting_data-2.png" class="img-responsive" alt=""> </div>
